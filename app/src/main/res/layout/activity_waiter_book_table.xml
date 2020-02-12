@@ -239,7 +239,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10.0dip"
             android:gravity="center|left"
-            android:text="Total  $0.00 "
+            android:text="Total-0.00"
             android:textColor="#ff292929"
             android:textStyle="bold" />
 
@@ -250,6 +250,7 @@
             android:background="@android:color/transparent"
             android:drawableRight="@drawable/right_arrow"
             android:text="ORDER"
+            android:id="@+id/orderBtn"
             android:textColor="#ff292929" />
     </RelativeLayout>
 </RelativeLayout>

@@ -111,6 +111,7 @@ public class WaiterHelper extends AppCompatActivity {
 
         }
     }
+
     public static final class GetMenuList extends AsyncTask<String, Void, String> {
 
         @Override
@@ -123,6 +124,51 @@ public class WaiterHelper extends AppCompatActivity {
                 OkHttpClient client = new OkHttpClient();
                 Request.Builder builder = new Request.Builder();
                 builder.url(AppConfig.BASE_URL_API_ + "GetMenuList");
+                builder.addHeader("Content-Type", "application/json");
+                builder.addHeader("Accept", "application/json");
+
+                okhttp3.Response response = client.newCall(builder.build()).execute();
+                if (response.isSuccessful()) {
+                    json = response.body().string();
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Error: " + e);
+            }
+
+            return json;
+        }
+
+        protected void onPostExecute(String result) {
+
+            try {
+                if (result.isEmpty()) {
+
+                } else {
+                    super.onPostExecute(result);
+
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    public static final class GetFoodMenuList extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String fid = params[0];
+            String json = "";
+            try {
+
+                OkHttpClient client = new OkHttpClient();
+                Request.Builder builder = new Request.Builder();
+                builder.url(AppConfig.BASE_URL_API_ + "GetFoodMenuList/"+fid);
                 builder.addHeader("Content-Type", "application/json");
                 builder.addHeader("Accept", "application/json");
 
