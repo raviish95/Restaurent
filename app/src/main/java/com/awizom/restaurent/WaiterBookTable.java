@@ -1,6 +1,7 @@
 package com.awizom.restaurent;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,6 +42,8 @@ public class WaiterBookTable extends AppCompatActivity {
     EditText editTextName, editTextMob;
     ArrayList<String> fidarray = new ArrayList<>();
     ArrayList<String> quantarray = new ArrayList<>();
+    ArrayList<String> fnamearray = new ArrayList<>();
+    ArrayList<String> fpricearray = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +72,37 @@ public class WaiterBookTable extends AppCompatActivity {
                 String name = editTextName.getText().toString();
                 String mobno = editTextMob.getText().toString();
                 String totval = total.getText().toString();
-                Toast.makeText(getApplicationContext(),fidarray.toString()+"/"+quantarray.toString()+"/"+ tableid.toString(), Toast.LENGTH_LONG).show();
+
+                removeZero();
+
+                Intent intent = new Intent(WaiterBookTable.this, TotalPaymentActivity.class);
+                intent.putExtra("CName", name);
+                intent.putExtra("TabID", tableid.toString());
+                intent.putExtra("MobNo", mobno);
+                intent.putExtra("TotalAmt", totval);
+                intent.putStringArrayListExtra("FoodID", (ArrayList<String>) fidarray);
+                intent.putStringArrayListExtra("QuantID", (ArrayList<String>) quantarray);
+                intent.putStringArrayListExtra("FoodName", (ArrayList<String>) fnamearray);
+                intent.putStringArrayListExtra("FoodPrice", (ArrayList<String>) fpricearray);
+                startActivity(intent);
             }
         });
+    }
+
+    private void removeZero() {
+        for (int i = 0; i < quantarray.size(); i++) {
+            int foodis=Integer.parseInt(quantarray.get(i).toString().split("T")[1]);
+            if (foodis==0) {
+                quantarray.remove(i);
+                fidarray.remove(i);
+                fnamearray.remove(i);
+                fpricearray.remove(i);
+            }
+        }
+        boolean retval = quantarray.contains("0");
+        if (retval==true) {
+            removeZero();
+        }
     }
 
     private void GetMenuList() {
@@ -106,7 +137,7 @@ public class WaiterBookTable extends AppCompatActivity {
                 }.getType();
                 /*     Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();*/
                 menuItemModelList = new Gson().fromJson(result, listType);
-                menuFoodListAdapter = new MenuFoodListAdapter(this, menuItemModelList, total,fidarray,quantarray);
+                menuFoodListAdapter = new MenuFoodListAdapter(this, menuItemModelList, total, fidarray, quantarray,fnamearray,fpricearray);
                 recyclerViewFood.setAdapter(menuFoodListAdapter);
             }
         } catch (Exception e) {

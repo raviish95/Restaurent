@@ -33,12 +33,10 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.MyVi
     LinearLayout lout;
     String tableid;
 
-
     public TableListAdapter(Context baseContext, List<TableModel> tableModelList, String tableid) {
         this.tableModelList = tableModelList;
         this.mCtx = baseContext;
         this.tableid=tableid;
-
     }
 
     @Override

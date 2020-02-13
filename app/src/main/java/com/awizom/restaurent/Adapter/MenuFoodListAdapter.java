@@ -8,6 +8,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,13 +37,17 @@ public class MenuFoodListAdapter extends RecyclerView.Adapter<MenuFoodListAdapte
     TextView total;
     ArrayList<String> fidarray;
     ArrayList<String> quantarray;
+    ArrayList<String> fnamearray;
+    ArrayList<String> fpricearray;
 
-    public MenuFoodListAdapter(Context baseContext, List<MenuItemModel> menuItemModelList, TextView total, ArrayList<String> fidarray, ArrayList<String> quantarray) {
+    public MenuFoodListAdapter(Context baseContext, List<MenuItemModel> menuItemModelList, TextView total, ArrayList<String> fidarray, ArrayList<String> quantarray, ArrayList<String> fnamearray, ArrayList<String> fpricearray) {
         this.menuItemModelList = menuItemModelList;
         this.mCtx = baseContext;
         this.total = total;
         this.fidarray = fidarray;
         this.quantarray = quantarray;
+        this.fnamearray = fnamearray;
+        this.fpricearray = fpricearray;
     }
 
     @Override
@@ -52,22 +57,25 @@ public class MenuFoodListAdapter extends RecyclerView.Adapter<MenuFoodListAdapte
         holder.foodID.setText(String.valueOf(c.getMID()));
         holder.price.setText(String.valueOf(c.getPrice()));
         fidarray.add(holder.foodID.getText().toString());
-        quantarray.add("0");
+        fnamearray.add(holder.foodname.getText().toString());
+        fpricearray.add(holder.price.getText().toString());
+        quantarray.add(holder.foodID.getText().toString() + "T0");
         holder.position.setText(String.valueOf(position));
         holder.increase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 int value = Integer.parseInt(holder.value.getText().toString());
+                int positionss = 0;
+               for (String products : quantarray) {
+                    if (products.equals(holder.foodID.getText().toString() + "T"+value))
+                        positionss = quantarray.indexOf(products);
+                }
                 value = value + 1;
-                int positionss = Integer.parseInt(holder.position.getText().toString());
-                quantarray.set(positionss, String.valueOf(value));
+                quantarray.set(positionss, String.valueOf(holder.foodID.getText().toString() + "T"+value));
                 holder.value.setText(String.valueOf(value));
                 float finalfloat = Float.parseFloat(holder.price.getText().toString());
                 float totalprice = Float.parseFloat(total.getText().toString().split("-")[1]);
                 total.setText("Total-" + String.valueOf(totalprice + finalfloat));
-
-
             }
         });
         holder.decrease.setOnClickListener(new View.OnClickListener() {
@@ -75,10 +83,17 @@ public class MenuFoodListAdapter extends RecyclerView.Adapter<MenuFoodListAdapte
             public void onClick(View view) {
                 int value = Integer.parseInt(holder.value.getText().toString());
                 if (value != 0.0) {
+                    int positionss = 0;
+                    for (String products : quantarray) {
+                        if (products.equals(holder.foodID.getText().toString() + "T"+value))
+                            positionss = quantarray.indexOf(products);
+                    }
                     value = value - 1;
+
                     holder.value.setText(String.valueOf(value));
-                    int positionss = Integer.parseInt(holder.position.getText().toString());
-                    quantarray.set(positionss, String.valueOf(value));
+
+
+                    quantarray.set(positionss, String.valueOf(holder.foodID.getText().toString() + "T"+value));
                     float finalfloat = Float.parseFloat(holder.price.getText().toString());
                     float totalprice = Float.parseFloat(total.getText().toString().split("-")[1]) - finalfloat;
                     total.setText("Total-" + String.valueOf(totalprice));

@@ -6,5 +6,6 @@
     <color name="primaryTextColor">#11CFC5</color>
     <color name="grey">#CDD1D3</color>
     <color name="white">#FFFFFF</color>
-
+    <color name="blackTextColor">#000</color>
+    <color name="colorLoginPrimaryDark">#FDFFFF</color>
 </resources>
