@@ -52,6 +52,7 @@ public class TotalAmountMenuAdapter extends RecyclerView.Adapter<TotalAmountMenu
         holder.value.setText(quantarray.get(position).toString().split("T")[1]);
         float vales=(Float.parseFloat(holder.value.getText().toString()))*(Float.parseFloat(holder.price.getText().toString()));
         holder.Totprice.setText(String.valueOf(vales));
+        holder.calculateVal.setText(holder.value.getText().toString()+"X"+holder.price.getText().toString()+"="+vales);
     }
 
     @Override
@@ -80,7 +81,7 @@ public class TotalAmountMenuAdapter extends RecyclerView.Adapter<TotalAmountMenu
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView foodname, foodID, decrease, increase, value, price, position,Totprice;
+        TextView foodname, foodID, decrease, increase, value, price, position,Totprice,calculateVal;
 
         @RequiresApi(api = Build.VERSION_CODES.M)
         public MyViewHolder(View view) {
@@ -93,6 +94,7 @@ public class TotalAmountMenuAdapter extends RecyclerView.Adapter<TotalAmountMenu
             price = view.findViewById(R.id.price);
             position = view.findViewById(R.id.position);
             Totprice=view.findViewById(R.id.Totprice);
+            calculateVal=view.findViewById(R.id.calculateVal);
         }
     }
 }

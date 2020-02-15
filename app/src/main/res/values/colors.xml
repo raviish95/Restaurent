@@ -7,5 +7,7 @@
     <color name="grey">#CDD1D3</color>
     <color name="white">#FFFFFF</color>
     <color name="blackTextColor">#000</color>
+    <color name="gradientLightBlue">#376DF6</color>
+    <color name="gradientViolet">#8A52E9</color>
     <color name="colorLoginPrimaryDark">#FDFFFF</color>
 </resources>

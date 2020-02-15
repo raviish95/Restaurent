@@ -91,8 +91,6 @@ public class MenuFoodListAdapter extends RecyclerView.Adapter<MenuFoodListAdapte
                     value = value - 1;
 
                     holder.value.setText(String.valueOf(value));
-
-
                     quantarray.set(positionss, String.valueOf(holder.foodID.getText().toString() + "T"+value));
                     float finalfloat = Float.parseFloat(holder.price.getText().toString());
                     float totalprice = Float.parseFloat(total.getText().toString().split("-")[1]) - finalfloat;

@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20.0dip"
-                android:text="Hi, John"
+                android:text="Hi!"
                 android:textColor="#ffffffff"
                 android:textSize="20.0sp"
                 android:textStyle="bold" />
@@ -53,7 +53,7 @@
                 android:textSize="45.0sp"
                 android:textStyle="bold" />
 
-            <EditText
+       <!--     <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="55.0dip"
                 android:layout_marginLeft="25.0dip"
@@ -68,7 +68,7 @@
                 android:maxLines="1"
                 android:paddingLeft="10.0dip"
                 android:paddingRight="10.0dip"
-                android:textColorHint="#ff8b8b8b" />
+                android:textColorHint="#ff8b8b8b" />-->
 
             <Button
                 android:id="@+id/search_press"
@@ -78,7 +78,7 @@
                 android:layout_marginRight="25.0dip"
                 android:layout_marginTop="20.0dip"
                 android:background="@drawable/roundcorner"
-                android:text="S E A R C H"
+                android:text="B O O K  T A B L E"
                 android:textColor="#ffffffff"
                 android:textSize="16.0sp"
                 android:textStyle="bold" />

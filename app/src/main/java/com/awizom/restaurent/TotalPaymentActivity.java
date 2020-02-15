@@ -1,15 +1,19 @@
 package com.awizom.restaurent;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -33,25 +37,25 @@ public class TotalPaymentActivity extends AppCompatActivity {
 
     TextView subTotal, netTotal, grdTotal, cname, mobno;
     EditText editDiscName, editTextSGSt, editTextCGST;
-    ImageView submit;
+    Button submit;
     String result = "";
     List<TaxModel> taxModelList;
     ArrayList<String> arrylist = new ArrayList<String>();
     Spinner spin;
     String registertype = "";
-    String CName = "", MobNo = "", TotalAmt = "", TabID = "";
+    String CName = "", MobNo = "", TotalAmt = "", TabID = "",OrderNo="";
     ArrayList<String> fidarray = new ArrayList<>();
     ArrayList<String> quantarray = new ArrayList<>();
     ArrayList<String> fnamearray = new ArrayList<>();
     ArrayList<String> fpricearray = new ArrayList<>();
     RecyclerView restolist;
     TotalAmountMenuAdapter totalAmountMenuAdapter;
-
-
+    android.support.v7.app.AlertDialog b;
+    android.support.v7.widget.Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_total_payment);
+        setContentView(R.layout.layout_total_pay);
         InitView();
     }
 
@@ -59,12 +63,16 @@ public class TotalPaymentActivity extends AppCompatActivity {
         TabID = getIntent().getStringExtra("TabID");
         CName = getIntent().getStringExtra("CName");
         MobNo = getIntent().getStringExtra("MobNo");
+        OrderNo=getIntent().getStringExtra("OrderNo");
         TotalAmt = getIntent().getStringExtra("TotalAmt");
         fidarray = getIntent().getStringArrayListExtra("FoodID");
         quantarray = getIntent().getStringArrayListExtra("QuantID");
         fnamearray = getIntent().getStringArrayListExtra("FoodName");
         fpricearray = getIntent().getStringArrayListExtra("FoodPrice");
-        Toast.makeText(getApplicationContext(), fidarray.toString() + "/" + quantarray.toString() + "/" + TabID.toString() + "/" + fnamearray.toString() + "/" + fpricearray.toString(), Toast.LENGTH_LONG).show();
+       /* Toast.makeText(getApplicationContext(), fidarray.toString() + "/" + quantarray.toString() + "/" + TabID.toString() + "/" + fnamearray.toString() + "/" + fpricearray.toString(), Toast.LENGTH_LONG).show();*/
+        toolbar=findViewById(R.id.toolbar);
+        toolbar.setTitle("Total Payment");
+        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
         cname = findViewById(R.id.cname);
         mobno = findViewById(R.id.mobno);
         try {
@@ -140,9 +148,56 @@ public class TotalPaymentActivity extends AppCompatActivity {
 
             }
         });
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String length=null;
+                length=String.valueOf(quantarray.size());
+                try {
+                    result = new WaiterHelper.PostFoodOrder().execute(cname.getText().toString(),
+                            mobno.getText().toString(), editDiscName.getText().toString(), netTotal.getText().toString(),
+                            grdTotal.getText().toString(),editTextSGSt.getText().toString(),editTextCGST.getText().toString(),
+                            fidarray.toString(), quantarray.toString(), fnamearray.toString(),fpricearray.toString(),
+                            TabID.toString(),String.valueOf(quantarray.size()),OrderNo.toString()).get();
+                    if (result.isEmpty()) {
+                        result = new WaiterHelper.PostFoodOrder().execute(cname.getText().toString(),
+                                mobno.getText().toString(), editDiscName.getText().toString(), netTotal.getText().toString(),
+                                grdTotal.getText().toString(),editTextSGSt.getText().toString(),editTextCGST.getText().toString(),
+                                fidarray.toString(), quantarray.toString(), fnamearray.toString(),fpricearray.toString(),
+                                TabID.toString(),String.valueOf(quantarray.size()),OrderNo.toString()).get();
 
+                    } else {
+                        if (result.equals("1")) {
+                            ShowSucceessFullyDialog();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
+    public void ShowSucceessFullyDialog() {
+
+        final br.com.simplepass.loading_button_lib.customViews.CircularProgressButton submits;
+        final android.support.v7.app.AlertDialog.Builder dialogBuilder = new android.support.v7.app.AlertDialog.Builder(TotalPaymentActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.confirmpayment, null);
+        TextView desc = dialogView.findViewById(R.id.textViewSub7Title);
+        submits = dialogView.findViewById(R.id.cirSubmitButton);
+        submits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(TotalPaymentActivity.this,HomePage.class);
+                startActivity(intent);
+            }
+        });
+        dialogBuilder.setView(dialogView);
+        dialogView.setBackgroundColor(Color.parseColor("#F0F8FF"));
+        b = dialogBuilder.create();
+        b.show();
+    }
     private void SetAdapter() {
         totalAmountMenuAdapter = new TotalAmountMenuAdapter(this, fnamearray, fpricearray, quantarray);
         restolist.setAdapter(totalAmountMenuAdapter);
