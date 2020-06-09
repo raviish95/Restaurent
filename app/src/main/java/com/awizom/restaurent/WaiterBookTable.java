@@ -26,6 +26,7 @@ import com.awizom.restaurent.Model.TableModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -154,6 +155,7 @@ public class WaiterBookTable extends AppCompatActivity {
                 fpricearray.remove(i);
             }
         }
+
         boolean retval = quantarray.contains("0");
         if (retval == true) {
             removeZero();

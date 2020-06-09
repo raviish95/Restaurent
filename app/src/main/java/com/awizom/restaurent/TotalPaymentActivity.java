@@ -69,6 +69,7 @@ public class TotalPaymentActivity extends AppCompatActivity {
         quantarray = getIntent().getStringArrayListExtra("QuantID");
         fnamearray = getIntent().getStringArrayListExtra("FoodName");
         fpricearray = getIntent().getStringArrayListExtra("FoodPrice");
+        removeZero();
        /* Toast.makeText(getApplicationContext(), fidarray.toString() + "/" + quantarray.toString() + "/" + TabID.toString() + "/" + fnamearray.toString() + "/" + fpricearray.toString(), Toast.LENGTH_LONG).show();*/
         toolbar=findViewById(R.id.toolbar);
         toolbar.setTitle("Total Payment");
@@ -176,6 +177,22 @@ public class TotalPaymentActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void removeZero() {
+        for (int i = 0; i < quantarray.size(); i++) {
+            int foodis = Integer.parseInt(quantarray.get(i).toString().split("T")[1]);
+            if (foodis == 0) {
+                quantarray.remove(i);
+                fidarray.remove(i);
+                fnamearray.remove(i);
+                fpricearray.remove(i);
+            }
+        }
+        boolean retval = quantarray.contains("0");
+        if (retval == true) {
+            removeZero();
+        }
     }
 
     public void ShowSucceessFullyDialog() {
